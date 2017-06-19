@@ -1,0 +1,174 @@
+.picker {
+  text-align: center;
+}
+
+.farbtastic {
+  position: relative;
+}
+.farbtastic * {
+  position: absolute;
+  cursor: crosshair;
+}
+.farbtastic, .farbtastic .wheel {
+  width: 165px;
+  height: 165px;
+}
+.farbtastic .color, .farbtastic .overlay {
+  top: 42px;
+  left: 42px;
+  width: 81px;
+  height: 81px;
+}
+.farbtastic .wheel {
+  background: url(../img/wheel.png) no-repeat;
+  background-size: contain;
+  width: 165px;
+  height: 165px;
+}
+.farbtastic .overlay {
+  background: url(../img/mask.png) no-repeat;
+  background-size: contain;
+}
+.farbtastic .marker {
+  width: 17px;
+  height: 17px;
+  margin: -8px 0 0 -8px;
+  overflow: hidden;
+  background: url(../img/marker.png) no-repeat;
+}
+
+/*_______ color pane ________*/
+.color-pane {
+  text-align: center;
+}
+
+.color-pane .header {
+  border: solid 1px gray;
+  margin: 5px;
+}
+
+.color-pane .header .colorname {
+  
+}
+
+.color-pane .header .colorbox {
+  border: 1px solid #CCC;
+  height: 35px;
+  cursor: pointer;
+}
+
+.color-pane .footer {
+  
+}
+
+.color-pane .footer .colorinp {
+    padding: 5px;
+    margin: 5px;
+    width: -webkit-calc(100% - 10px);
+    width: -moz-calc(100% - 10px);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.color-pane .footer .colorop {
+    padding: 5px;
+    margin-bottom: 5px;
+    width: -webkit-calc(100% - 10px);
+    width: -moz-calc(100% - 10px);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/*---------------------- pop up ----------------------*/
+.popup-picker {
+  text-align: center;
+}
+
+.popup-farbtastic {
+  position: relative;
+}
+.popup-farbtastic * {
+  position: absolute;
+  cursor: crosshair;
+}
+.popup-farbtastic, .popup-farbtastic .popup-wheel {
+  width: 501px;
+  height: 501px;
+}
+.popup-farbtastic .popup-color, .popup-farbtastic .popup-overlay {
+  top: 140px;
+  left: 140px;
+  width: 221px;
+  height: 221px;
+}
+.popup-farbtastic .popup-wheel {
+  background: url(../img/wheel.png) no-repeat;
+  background-size: contain;
+  width: 501px;
+  height: 501px;
+}
+.popup-farbtastic .popup-overlay {
+  background: url(../img/mask.png) no-repeat;
+  background-size: contain;
+}
+.popup-farbtastic .popup-marker {
+  width: 17px;
+  height: 17px;
+  margin: -8px 0 0 -8px;
+  overflow: hidden;
+  background: url(../img/marker.png) no-repeat;
+}
+
+/*_______ color pane ________*/
+.popup-color-pane {
+  text-align: center;
+  margin: 5px;
+}
+
+.popup-color-pane .popup-header {
+  border: solid 1px gray;
+  margin: 5px;
+}
+
+.popup-color-pane .popup-header .popup-colorname {
+  
+}
+
+.popup-color-pane .popup-header .popup-colorbox {
+  border: 1px solid #CCC;
+  height: 35px;
+}
+
+.popup-color-pane .popup-footer {
+  
+}
+
+.popup-color-pane .popup-footer .popup-colorinp {
+    padding: 5px;
+    margin: 5px;
+    width: -webkit-calc(100% - 10px);
+    width: -moz-calc(100% - 10px);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.popup-color-pane .popup-footer .popup-colorop {
+    padding: 5px;
+    margin-bottom: 5px;
+    width: -webkit-calc(100% - 10px);
+    width: -moz-calc(100% - 10px);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}

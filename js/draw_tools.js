@@ -45,6 +45,7 @@ function DRAW_TOOLS_CLASS() {
 	 */
 	var fx_filter = false;
 
+
 	//credits to Victor Haydin
 	this.toolFiller = function (context, W, H, x, y, color_to, sensitivity, anti_aliasing) {
 		canvas_front.clearRect(0, 0, WIDTH, HEIGHT);
@@ -187,52 +188,62 @@ function DRAW_TOOLS_CLASS() {
 		var active_layer_obj = document.getElementById(LAYER.layers[LAYER.layer_active].name);
 		
 		if (type == 'drag') {
-			canvas_front.clearRect(0, 0, WIDTH, HEIGHT);
+			if(LAYER.layers[LAYER.layer_active].type === 'P') {
+				console.log('------------------- <P> select tool mouse drag ---------------------' + mouse.y + '--------------' + mouse.click_y);
+				active_layer_obj.style.left = (mouse.x + 100) + 'px';
+				active_layer_obj.style.top = (mouse.y-50) + 'px';
+			} else {
+				canvas_front.clearRect(0, 0, WIDTH, HEIGHT);
 			
-			if(active_layer_obj.style.visibility != 'hidden'){
-				//hide active layer
-				active_layer_obj.style.visibility = 'hidden';
-			}
-			
-			if(EVENTS.ctrl_pressed == true){
-				//ctrl is pressed
-				var xx = mouse.x;
-				var yy = mouse.y;
-				if (Math.abs(mouse.click_x - mouse.x) < Math.abs(mouse.click_y - mouse.y))
-					xx = mouse.click_x;
-				else
-					yy = mouse.click_y;
-				canvas_front.drawImage(canvas_active(true), xx - mouse.click_x, yy - mouse.click_y);
-			}
-			else{
-				canvas_front.drawImage(canvas_active(true), mouse.x - mouse.click_x, mouse.y - mouse.click_y);
+				if(active_layer_obj.style.visibility != 'hidden'){
+					//hide active layer
+					active_layer_obj.style.visibility = 'hidden';
+				}
+				
+				if(EVENTS.ctrl_pressed == true){
+					//ctrl is pressed
+					var xx = mouse.x;
+					var yy = mouse.y;
+					if (Math.abs(mouse.click_x - mouse.x) < Math.abs(mouse.click_y - mouse.y))
+						xx = mouse.click_x;
+					else
+						yy = mouse.click_y;
+					canvas_front.drawImage(canvas_active(true), xx - mouse.click_x, yy - mouse.click_y);
+				}
+				else{
+					canvas_front.drawImage(canvas_active(true), mouse.x - mouse.click_x, mouse.y - mouse.click_y);
+				}
 			}
 		}
 		else if (type == 'release') {
-			//show active layer
-			active_layer_obj.style.visibility = 'visible';
-			
-			if (mouse.valid == false || mouse.click_x === false){
-				return false;
-			}
-			if (mouse.x - mouse.click_x == 0 && mouse.y - mouse.click_y == 0){
-				return false;
-			}
-			EDIT.save_state();
-			var tmp = canvas_active().getImageData(0, 0, WIDTH, HEIGHT);
-			canvas_active().clearRect(0, 0, WIDTH, HEIGHT);
-			if(EVENTS.ctrl_pressed == true){
-				//ctrl is pressed
-				var xx = mouse.x;
-				var yy = mouse.y;
-				if (Math.abs(mouse.click_x - mouse.x) < Math.abs(mouse.click_y - mouse.y))
-					xx = mouse.click_x;
-				else
-					yy = mouse.click_y;
-				canvas_active().putImageData(tmp, xx - mouse.click_x, yy - mouse.click_y);
-			}
-			else{
-				canvas_active().putImageData(tmp, mouse.x - mouse.click_x, mouse.y - mouse.click_y);
+			if(LAYER.layers[LAYER.layer_active].type === 'P') {
+				console.log('------------------- <P> select tool mouse release ---------------------');
+			} else {
+				//show active layer
+				active_layer_obj.style.visibility = 'visible';
+				
+				if (mouse.valid == false || mouse.click_x === false){
+					return false;
+				}
+				if (mouse.x - mouse.click_x == 0 && mouse.y - mouse.click_y == 0){
+					return false;
+				}
+				EDIT.save_state();
+				var tmp = canvas_active().getImageData(0, 0, WIDTH, HEIGHT);
+				canvas_active().clearRect(0, 0, WIDTH, HEIGHT);
+				if(EVENTS.ctrl_pressed == true){
+					//ctrl is pressed
+					var xx = mouse.x;
+					var yy = mouse.y;
+					if (Math.abs(mouse.click_x - mouse.x) < Math.abs(mouse.click_y - mouse.y))
+						xx = mouse.click_x;
+					else
+						yy = mouse.click_y;
+					canvas_active().putImageData(tmp, xx - mouse.click_x, yy - mouse.click_y);
+				}
+				else{
+					canvas_active().putImageData(tmp, mouse.x - mouse.click_x, mouse.y - mouse.click_y);
+				}
 			}	
 		}
 	};
@@ -569,8 +580,10 @@ function DRAW_TOOLS_CLASS() {
 		var yy = mouse.y;
 
 		if (type == 'click') {
+			var font_style = GUI.action_data().attributes.type;
+			var font_size = GUI.action_data().attributes.size;
 			LAYER.send_canvas_front_to_back();
-			LAYER.text_layer_add(xx, yy);
+			LAYER.text_layer_add(xx, yy, font_style, font_size);
 		}
 	};
 	this.letters_render = function (canvas, xx, yy, user_response) {
@@ -710,6 +723,11 @@ function DRAW_TOOLS_CLASS() {
 		if (GUI.action_data().attributes.type != 'Brush')
 			document.getElementById('anti_aliasing').style.display = 'none';
 	};
+
+	this.update_letter = function () {
+		console.log('---------------- update letter -------------------');
+	};
+
 	this.desaturate_tool = function (type, mouse, event) {
 		if (mouse.valid == false)
 			return true;
@@ -742,6 +760,7 @@ function DRAW_TOOLS_CLASS() {
 		if (mouse.valid == false)
 			return true;
 		var brush_type = GUI.action_data().attributes.type;
+		console.log('------------- brush type ------------' + brush_type);
 		var color_rgb = HELPER.hex2rgb(COLOR);
 		var size = GUI.action_data().attributes.size;
 		var original_size = GUI.action_data().attributes.size;

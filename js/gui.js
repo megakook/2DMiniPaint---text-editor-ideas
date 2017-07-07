@@ -364,6 +364,7 @@ function GUI_CLASS() {
 	};
 	
 	this.update_attribute = function (object, next_value) {
+		console.log('---------- update attribute -------------' + object);
 		var max_value = 500;
 		for (var k in this.action_data().attributes) {
 			if (k != object.id)
@@ -384,9 +385,12 @@ function GUI_CLASS() {
 				
 				var selected = object.options[object.selectedIndex];
 				var value = selected.getAttribute('data-value');
-				
+
+				console.log('----------- selected value ---------------' + value);
+				console.log('----------- action data------------', this.action_data());
 				var key = k.replace("_values", "");
 				this.action_data().attributes[key] = value;
+				LAYER.change_actived_text_layer_font_family();
 			}
 			else if (this.action_data().attributes[k][0] == '#') {
 				//color
@@ -439,6 +443,9 @@ function GUI_CLASS() {
 				this.action_data().attributes[k] = object.value;
 
 				document.getElementById(k).value = object.value;
+
+				// hans modified
+				LAYER.change_actived_text_layer_font_size();
 			}
 			if (this.action_data().on_update != undefined){
 				DRAW[this.action_data().on_update](object.value);
@@ -462,11 +469,14 @@ function GUI_CLASS() {
 	};
 	
 	this.action = function (key) {
-		console.log('----------------- tool selected ----------------------' + key);
 
 		if(key !== 'letters'){
 			LAYER.bring_canvas_front_to_front();
-			LAYER.layer_add();
+			if(LAYER.layers[LAYER.layer_active].type === 'P') {
+				if(key !== 'select_tool'){
+					LAYER.layer_add();
+				}
+			}
 		}
 
 		DRAW[key]('init', {valid: true});
@@ -573,6 +583,7 @@ function GUI_CLASS() {
 		document.getElementById("rgb_g").value = colors.g;
 		document.getElementById("rgb_b").value = colors.b;
 		*/
+		LAYER.change_actived_text_layer_color();
 	};
 	
 	this.set_color_manual = function (event) {

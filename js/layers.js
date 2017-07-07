@@ -179,7 +179,9 @@ function LAYER_CLASS() {
 		this.layer_renew();
 	};
 
-	this.text_layer_add = function(x, y) {
+	this.text_layer_add = function(x, y, font_style, font_size) {
+
+
 		text_layer_max_index ++;
 
 		var layer_name = this.generate_text_layer_name();
@@ -187,6 +189,7 @@ function LAYER_CLASS() {
 		new_layer.name = layer_name;
 		new_layer.title = layer_name;
 		new_layer.type = 'P';
+		new_layer.status = 'none';
 		new_layer.visible = true;
 		new_layer.opacity = 1;
 
@@ -196,7 +199,13 @@ function LAYER_CLASS() {
 		tElement.setAttribute('spellcheck', 'false');
 		tElement.style.top = (y - 5) + 'px';
 		tElement.style.left = (x + 150) + 'px';
-		tElement.className = 'text';
+		tElement.style.font = font_size + 'px ' + font_style;
+
+		var color_rgb = HELPER.hex2rgb(COLOR);
+
+		//tElement.style.color = "#e91e63";
+		tElement.style.color = "rgba(" + color_rgb.r + ", " + color_rgb.g + ", " + color_rgb.b + ", " + ALPHA / 255 + ")";
+		//tElement.className = 'text';
 		tElement.setAttribute('id', layer_name);
 		document.getElementById("canvas_more").appendChild(tElement);
 		window.setTimeout(function ()
@@ -554,10 +563,12 @@ function LAYER_CLASS() {
 		canvas_active().clearRect(0, 0, WIDTH, HEIGHT);
 		canvas_active().putImageData(tmp, dx, dy);
 	};
-	this.select_layer = function (i) {
 
+	this.select_layer = function (i) {
+		this.layer_active = i;
 		console.log('----- selected layer ------' + i + '-----------' + LAYER.layers.length);
 		if(LAYER.layers[i].type == 'P'){
+			LAYER.layers[i].status = 'editable';
 			this.bring_text_layer_to_front(LAYER.layers[i].name);
 			this.send_canvas_front_to_back();
 		}else{
@@ -568,6 +579,7 @@ function LAYER_CLASS() {
 			LAYER.shake(i);
 		}
 	};
+
 	this.layer_renew = function () {
 		var html = '';
 		for (var i in this.layers) {
@@ -821,14 +833,41 @@ function LAYER_CLASS() {
 	};
 
 	this.bring_text_layer_to_front = function (text_layer_name) {
-		var parent = document.getElementById('canvas_more');
-		var source = document.getElementById(text_layer_name);
-		var target = document.getElementById(LAYER.layers[0].name);
-		parent.insertBefore(source, target);
-		parent.insertBefore(target, source);
-		source.focus();
-		DRAW.active_tool = 'letters';
+		if(DRAW.active_tool !== 'select_tool'){
+			var parent = document.getElementById('canvas_more');
+			var source = document.getElementById(text_layer_name);
+			var target = document.getElementById(LAYER.layers[0].name);
+			parent.insertBefore(source, target);
+			parent.insertBefore(target, source);
+			source.focus();
+			DRAW.active_tool = 'letters';
+		} else {
+
+		}
+		
+
 	};
+
+	this.change_actived_text_layer_color = function() {
+		if(this.layers[this.layer_active].status === 'editable') {
+			var color_rgb = HELPER.hex2rgb(COLOR);
+			document.getElementById(this.layers[this.layer_active].name).style.color = "rgba(" + color_rgb.r + ", " + color_rgb.g + ", " + color_rgb.b + ", " + ALPHA / 255 + ")";
+		}
+	};
+
+	this.change_actived_text_layer_font_size = function() {
+		if(this.layers[this.layer_active].status === 'editable') {
+			console.log('--------------- action data ------------------' + GUI.action_data().attributes.size);
+			document.getElementById(this.layers[this.layer_active].name).style.fontSize = GUI.action_data().attributes.size + 'px';
+		}
+	};
+
+	this.change_actived_text_layer_font_family = function() {
+		if(this.layers[this.layer_active].status === 'editable') {
+			console.log('--------------- action data ------------------' + GUI.action_data().attributes.type);
+			document.getElementById(this.layers[this.layer_active].name).style.fontFamily = GUI.action_data().attributes.type;
+		}
+	}
 }
 
 function canvas_active(base) {
